@@ -1,7 +1,11 @@
+/* Command executer:
+node deploy-commands.js -d
+*/
+
 const { REST, Routes } = require('discord.js');
-const fs = require('node:fs');
 const path = require('node:path');
-const logger = require(path.join(path.join(__dirname, 'utils'), 'logger.js')).logger;
+const { logger } = require(path.join(path.join(__dirname, 'utils'), 'logger.js'));
+const { commands } = require(path.join(__dirname, 'command-file-loader.js'));
 
 const dotenv = require('dotenv');
 
@@ -52,19 +56,8 @@ if (!isGlobal) {
 	}
 }
 
-const commands = [];
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-
-	if ('data' in command && 'execute' in command) {
-		commands.push(command.data.toJSON());
-	} else {
-		logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
-	}
+for (let i = 0; i < commands.length; i++) {
+	commands[i] = commands[i].data.toJSON();
 }
 
 const rest = new REST().setToken(process.env.TOKEN);
@@ -85,7 +78,7 @@ const rest = new REST().setToken(process.env.TOKEN);
 					Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId),
 					{ body: deploy ? commands : [] },
 				);
-				logger.info(`Successfully ${deploy ? 'reloaded' : 'unregister'} ${data.length} guild ${guildId} (/) commands.`);
+				logger.info(`Successfully ${deploy ? 'reloaded' : 'unregister'} ${commands.length - data.length} guild ${guildId} (/) commands.`);
 			});
 		}
 

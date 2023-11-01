@@ -1,7 +1,7 @@
-const fs = require('node:fs');
 const path = require('node:path');
-const logger = require(path.join(path.join(__dirname, 'utils'), 'logger.js')).logger;
+const { logger } = require(path.join(path.join(__dirname, 'utils'), 'logger.js'));
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { commands } = require(path.join(__dirname, 'command-file-loader'));
 
 const dotenv = require('dotenv');
 
@@ -13,22 +13,11 @@ if (!process.env.TOKEN) {
 }
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-
-	if ('data' in command && 'execute' in command) {
-		client.commands.set(command.data.name, command);
-	} else {
-		logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
-	}
-}
+commands.forEach((cmd) => {
+	client.commands.set(cmd.data.name, cmd);
+});
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;

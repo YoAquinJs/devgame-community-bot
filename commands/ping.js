@@ -5,6 +5,8 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies with the latency'),
 	async execute(interaction) {
-		await interaction.reply('Pong: ');
+		const roundTripLatency = interaction.createdTimestamp - Date.now();
+
+		await interaction.reply(`Pong: ${roundTripLatency}ms`);
 	},
 };
