@@ -1,7 +1,7 @@
 const path = require('node:path');
 const { logger } = require(path.join(path.join(__dirname, 'utils'), 'logger.js'));
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { commands } = require(path.join(__dirname, 'command-file-loader'));
+const { loadFiles } = require(path.join(__dirname, 'files-loader'));
 
 const dotenv = require('dotenv');
 
@@ -15,7 +15,7 @@ if (!process.env.TOKEN) {
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
-commands.forEach((cmd) => {
+loadFiles('commands', 'data', 'execute').forEach((cmd) => {
 	client.commands.set(cmd.data.name, cmd);
 });
 

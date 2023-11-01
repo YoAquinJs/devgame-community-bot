@@ -5,7 +5,7 @@ node deploy-commands.js -d
 const { REST, Routes } = require('discord.js');
 const path = require('node:path');
 const { logger } = require(path.join(path.join(__dirname, 'utils'), 'logger.js'));
-const { commands } = require(path.join(__dirname, 'command-file-loader.js'));
+const { loadFiles } = require(path.join(__dirname, 'files-loader.js'));
 
 const dotenv = require('dotenv');
 
@@ -56,9 +56,7 @@ if (!isGlobal) {
 	}
 }
 
-for (let i = 0; i < commands.length; i++) {
-	commands[i] = commands[i].data.toJSON();
-}
+const commands = loadFiles('commands', 'data', 'execute').map((cmd) => cmd.data.toJSON());
 
 const rest = new REST().setToken(process.env.TOKEN);
 
