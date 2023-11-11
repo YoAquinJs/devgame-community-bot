@@ -5,7 +5,7 @@ node deploy-commands.js -d
 const { REST, Routes } = require('discord.js');
 const path = require('node:path');
 const { logger } = require(path.join(path.join(__dirname, 'utils'), 'logger.js'));
-const { loadFiles } = require(path.join(__dirname, 'files-loader.js'));
+const { loadFiles } = require(path.join(__dirname, 'filesLoader.js'));
 
 const dotenv = require('dotenv');
 

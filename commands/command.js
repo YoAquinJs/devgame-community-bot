@@ -2,8 +2,11 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('ping')
-		.setDescription('Replies with the latency'),
+		.setName('command')
+		.setDescription('Replies with the latency')
+		.addStringOption(option =>
+			option.setName('input')
+				.setDescription('Description')),
 	async execute(interaction) {
 		const roundTripLatency = interaction.createdTimestamp - Date.now();
 
