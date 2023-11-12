@@ -2,12 +2,11 @@
 node deploy-commands.js -d
 */
 
-const { REST, Routes } = require('discord.js');
-const path = require('node:path');
-const { logger } = require(path.join(path.join(__dirname, 'utils'), 'logger.js'));
-const { loadFiles } = require(path.join(__dirname, 'filesLoader.js'));
-
 const dotenv = require('dotenv');
+const { REST, Routes } = require('discord.js');
+
+const { logger } = require('./utils/logger.js');
+const { loadFiles } = require('./filesLoader.js');
 
 dotenv.config();
 

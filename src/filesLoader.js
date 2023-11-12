@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const logger = require(path.join(path.join(__dirname, 'utils'), 'logger.js')).logger;
 
+const { logger } = require('./utils/logger.js');
 
 module.exports = {
 	loadFiles(folder, ...requiredKeys) {
