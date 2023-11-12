@@ -1,11 +1,12 @@
+const path = require('path');
 const dotenv = require('dotenv');
+dotenv.config({ path:path.join(path.resolve(__dirname, '..'), '.env') });
+
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 
 const { logger } = require('./utils/logger.js');
 const { loadFiles } = require('./filesLoader.js');
 const { testDBConnection } = require('./database/connection.js');
-
-dotenv.config({ path:'./../.env' });
 
 if (!process.env.TOKEN) {
 	logger.error('Missing Discord bot Token');

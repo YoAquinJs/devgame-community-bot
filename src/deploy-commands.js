@@ -2,13 +2,15 @@
 node deploy-commands.js -d
 */
 
+const path = require('path');
 const dotenv = require('dotenv');
+dotenv.config({ path:path.join(path.resolve(__dirname, '..'), '.env') });
+
 const { REST, Routes } = require('discord.js');
 
 const { logger } = require('./utils/logger.js');
 const { loadFiles } = require('./filesLoader.js');
 
-dotenv.config();
 
 let deploy;
 if (process.argv.length < 3) {
