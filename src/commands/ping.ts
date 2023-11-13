@@ -1,12 +1,12 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 
-module.exports = {
+export const command = {
 	data: new SlashCommandBuilder()
-		.setName('ping')
+	.setName('ping')
 		.setDescription('Replies with the latency'),
-	async execute(interaction) {
+	execute: async function (interaction:ChatInputCommandInteraction) {
 		const roundTripLatency = interaction.createdTimestamp - Date.now();
 
 		await interaction.reply({ content: `Pong: ${roundTripLatency}ms`, ephemeral: true });
 	},
-};
+}

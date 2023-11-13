@@ -1,4 +1,6 @@
-.env
+*.env
+.eslintrc.json
+*.session.sql
 node_modules
 .vscode/
-*.session.sql
+dist/

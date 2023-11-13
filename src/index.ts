@@ -1,23 +1,19 @@
-const path = require('path');
-const dotenv = require('dotenv');
-dotenv.config({ path:path.join(path.resolve(__dirname, '..'), '.env') });
+import { Client, Collection, GatewayIntentBits, Command } from 'discord.js';
 
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
-
-const { logger } = require('./utils/logger.js');
-const { loadFiles } = require('./filesLoader.js');
-const { testDBConnection } = require('./database/connection.js');
+import { logger } from './utils/logger.js';
+import { loadFiles } from './filesLoader.js';
+import { testDBConnection } from './database/connection.js';
 
 if (!process.env.TOKEN) {
 	logger.error('Missing Discord bot Token');
-	return;
+	process.exit(1);
 }
 
 testDBConnection();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.commands = new Collection();
+client.commands = new Collection<string,Command>();
 loadFiles('commands', 'data', 'execute').forEach((cmd) => {
 	client.commands.set(cmd.data.name, cmd);
 });
@@ -30,4 +26,5 @@ loadFiles('events', 'name', 'execute').forEach((event => {
 	}
 }));
 
+console.log(process.env.TOKEN)
 client.login(process.env.TOKEN);
